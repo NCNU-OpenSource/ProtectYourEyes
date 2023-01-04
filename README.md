@@ -25,7 +25,8 @@
 ### 所使用的設備材料
 - 使用 linux 的主機
 - [巨大 enter 鍵](https://shopee.tw/product/70003480/4362094203?smtt=0.30911880-1672760034.9)
-![](https://i.imgur.com/qNc4x1p.jpg =300x)
+
+![image](https://user-images.githubusercontent.com/105621295/210507350-20cfb47d-7bf3-4a2a-899b-396d9e973b12.png)
 
 
 ## 實作過程
