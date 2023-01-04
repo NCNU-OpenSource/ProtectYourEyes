@@ -33,8 +33,8 @@
 - 如果是虛擬機，要確認虛擬機有讀到鏡頭
     ![](https://i.imgur.com/j13vRez.png)
     - 如果讀不到鏡頭可能是擴充包的問題
-        ![](https://i.imgur.com/U97YQu1.png =400x)
-        > 要確認 Oracle 版本，下載相對應的擴充包ㄛ
+    ![](https://i.imgur.com/U97YQu1.png =400x)
+    > 要確認 Oracle 版本，下載相對應的擴充包ㄛ
 
 - 下載 opencv (需要版本 4 以上的)
 ```=
@@ -71,9 +71,10 @@ snapShotCt(cv2.CAP_V4L2, trans_time)
 ```
 ### 音效
 ```python=
-music_list = ['chinaFighting', 'fighting', 'wtf']
-i = random.randrange(0, len(music_list))
-playsound('./Audio/'+music_list[i]+'.mp3')
+def playAudio():
+    music_list = ['chinaFighting', 'fighting', 'wtf', 'Bread', 'goatgirl', 'scream', 'uRTheBest', 'whatRUDoin', 'who']
+    i = random.randrange(0, len(music_list))
+    playsound('./Audio/'+music_list[i]+'.mp3')
 ```
 
 ### 影像辨識
@@ -114,7 +115,7 @@ def detectEyes():
     # 辨識到的臉的數量
     faceNum = len(faces)
 
-    for (x,y,w,h) in faces:
+    for (x, y, w, h) in faces:
        roi_gray = gray[y:y+h, x:x+w]
        roi_color = img[y:y+h, x:x+w]
     
@@ -123,8 +124,8 @@ def detectEyes():
        eyesNum = len(eyes)
     
        # 在判斷為眼睛的區域畫線
-       for (ex,ey,ew,eh) in eyes:
-          cv2.rectangle(roi_color,(ex,ey),(ex+ew,ey+eh),(0,255,255),2)
+       for (ex, ey, ew, eh) in eyes:
+          cv2.rectangle(roi_color, (ex, ey), (ex+ew, ey+eh), (0, 255, 255), 2)
 
     if faceNum == 0 | eyesNum == 0:
         return 0
@@ -137,37 +138,39 @@ def detectEyes():
 ### 螢幕保護:
 1. 設定最一開始啟用時會出現的字，以及解鎖時所需要按的次數
 ```python=
-goal = 30 #需要按的目標數量
-img = np.zeros((512, 512, 3), np.uint8)
-text1 = "Please press enter "+str(goal)+ " times"
-cv2.putText(img,text1 , (30, 200), cv2FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2) # 設置容、位置等參數
-cv2.putText(img, "You can do it", (140, 250), cv2FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
-cv2.putText(img, "RIGHT?", (100, 360), cv2FONT_HERSHEY_SIMPLEX, 3, (255, 255, 255), 2)
-```
+def relaxUrEyes():
+    goal = 20
+    text1 = "Please press enter "+str(goal)+ " times"
+    img = np.zeros((2400, 3200, 3), np.uint8)
+    cv2.putText(img, text1, (60, 200), cv2.FONT_HERSHEY_SIMPLEX, 4, (255, 255, 255), 2)
+    cv2.putText(img, "You can do it", (400, 450), cv2.FONT_HERSHEY_SIMPLEX, 5, (255, 255, 255), 2)
+    cv2.putText(img, "MOVE UP!", (450, 800), cv2.FONT_HERSHEY_SIMPLEX, 7, (255, 255, 255), 2)```
 
 2. 使用 while 迴圈偵測按鍵
 ``` python= 
-count = 0 # 數按鍵設了幾下
-while True:
-    # 全螢幕
-    cv2.namedWindow('Is Time To Break!', cv2WINDOW_NORMAL)
-    cv2.setWindowProperty('Is Time To Break!', cv2WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
-    # 顯示圖片
-    cv2.imshow('Is Time To Break!', img)
-    key = cv2.waitKey(0)
-   
-    if key == 13:  # 如果按了 enter 鍵
-        count += 1
-        
-        # 顯示還剩餘幾下要按
-        inputtext = str(goal-count) + " times lef"
-        org1,org2 = ranom.randrange(0,300),random.randrange(20,500) # 隨機置
-        size = random.randrange(1,3) # 隨機文字大小
-        r,g,b = ranom.randrange(0,255),random.randrange(0,255),random.rndrange(0,255) # 隨機顏色
-        cv2.putText(img, inputtext, (org1, org2), cv2FONT_HERSHEY_SIMPLEX, size, (r, g, b), 2)
-        if count == goal: # 如果按到目標次數則停止
-            cv2.destroyAllWindows()
-            break
+    count = 0 # 數按鍵設了幾下
+    while True:
+        # 全螢幕
+        cv2.namedWindow('Its Time To Break!', cv2.WND_PROP_FULLSCREEN)
+        cv2.setWindowProperty('Its Time To Break!', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+
+        # 顯示圖片
+        cv2.imshow('Its Time To Break!', img)
+        key = cv2.waitKey(0)
+
+        if key == 13:   # 如果按了 enter 鍵
+            playAudio()
+            count += 1
+
+            # 顯示還剩餘幾下要按
+            inputtext = str(goal-count) +" times left"
+            org1,org2 = random.randrange(0,1500),random.randrange(50,900) # 隨機位置
+            size = random.randrange(1,5) # 隨機文字大小
+            r,g,b = random.randrange(0,255),random.randrange(0,255),random.randrange(0,255) # 隨機顏色
+            cv2.putText(img, inputtext, (org1, org2), cv2.FONT_HERSHEY_SIMPLEX, size, (r, g, b), 2)
+            if count == goal: # 如果按到目標次數則停止
+                cv2.destroyAllWindows()
+                break
 ```
 
 
