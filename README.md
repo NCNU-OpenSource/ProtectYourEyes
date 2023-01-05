@@ -215,7 +215,7 @@ python3 takePicNDetec.py
 
 ## 致謝!! :heart:
 - 惠霖 @Huei-Lin-Lin: debug N 陪伴
-- 柏瑋 @@PengLaiRenOu: debug
+- 柏瑋 @PengLaiRenOu: debug
 - 漢偉 @UncleHanWei: 題材發想
 - 姜美玲教授、簡翎恩、王婷誼、李虹: 音效提供
 
