@@ -1,10 +1,5 @@
 ###### tags: `1111` `lsa`
 # ProtectYourEyes LSA 期末專題實作
-- [專案 github](https://github.com/hunglee13/ProtectYourEyes)
-- [TG bot 模板](https://github.com/UncleHanWei/Python_Telegram_Bot_Template)
-- [PA Bot](https://github.com/UncleHanWei/PA_Bot)
-
-[TOC]
 
 ## 發展理念
 - 起因
