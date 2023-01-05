@@ -1,5 +1,10 @@
 ###### tags: `1111` `lsa`
 # ProtectYourEyes LSA 期末專題實作
+- [專案 github](https://github.com/hunglee13/ProtectYourEyes)
+- [TG bot 模板](https://github.com/UncleHanWei/Python_Telegram_Bot_Template)
+- [PA Bot](https://github.com/UncleHanWei/PA_Bot)
+
+[TOC]
 
 ## 發展理念
 - 起因
@@ -23,18 +28,17 @@
 - Python 
 - OpenCV
 ### 所使用的設備材料
-- 使用 linux 的主機
-- [巨大 enter 鍵](https://shopee.tw/product/70003480/4362094203?smtt=0.30911880-1672760034.9)
 
-![image](https://user-images.githubusercontent.com/105621295/210507350-20cfb47d-7bf3-4a2a-899b-396d9e973b12.png)
+- [巨大 enter 鍵](https://shopee.tw/product/70003480/4362094203?smtt=0.30911880-1672760034.9)
+![](https://i.imgur.com/qNc4x1p.jpg =300x)
 
 
 ## 實作過程
 - 如果是虛擬機，要確認虛擬機有讀到鏡頭
     ![](https://i.imgur.com/j13vRez.png)
     - 如果讀不到鏡頭可能是擴充包的問題
-    ![](https://i.imgur.com/U97YQu1.png =400x)
-    > 要確認 Oracle 版本，下載相對應的擴充包ㄛ
+        ![](https://i.imgur.com/U97YQu1.png =400x)
+        > 要確認 Oracle 版本，下載相對應的擴充包ㄛ
 
 - 下載 opencv (需要版本 4 以上的)
 ```=
@@ -63,11 +67,15 @@ from playsound import playsound
 
 - main function
 ```python=
-# 預計用眼時間
-set_time = int(input()) 
-# 將用眼時間轉換成要觀測的次數
-trans_time = set_time*60/2
-snapShotCt(cv2.CAP_V4L2, trans_time)
+def main():
+    # 預計用眼時間 (目前是設定以秒為單位，也可以設定為以分鐘)
+    set_time = int(input()) 
+    # 將用眼時間轉換成要觀測的次數
+    trans_time = set_time/2
+    snapShotCt(cv2.CAP_V4L2, trans_time)
+
+if __name__ == "__main__":
+    main()
 ```
 ### 音效
 ```python=
@@ -93,20 +101,20 @@ def snapShotCt(camera_idx, trans_time):
         time.sleep(2)
         cap.release()
     relaxUrEyes()    
-    cap.release()
 ```
 2. 辨識方法: 臉是否正面對鏡頭 + 眼睛是否兩顆都偵測到
 ```python=
 def detectEyes():
-    faceNum = 0
-    eyesNum = 0
+    faceNum = 0 # 辨識出的臉部數量
+    eyesNum = 0 # 辨識出的眼睛數量
+    
     # 讀取要辨識的影像
     img = cv2.imread('./testPicture/testImg.jpg')
 
     # 將照片轉為灰階
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-    # 讀入模型(臉和眼睛的)
+    # 讀入模型
     face_cascade = cv2.CascadeClassifier('./haarcascade_frontalface_default.xml')
     eye_cascade = cv2.CascadeClassifier('./haarcascade_eye_tree_eyeglasses.xml')
 
@@ -122,12 +130,8 @@ def detectEyes():
        # 在辨識為臉的區域辨識眼睛 (roi_)
        eyes = eye_cascade.detectMultiScale(roi_gray)
        eyesNum = len(eyes)
-    
-       # 在判斷為眼睛的區域畫線
-       for (ex, ey, ew, eh) in eyes:
-          cv2.rectangle(roi_color, (ex, ey), (ex+ew, ey+eh), (0, 255, 255), 2)
 
-    if faceNum == 0 | eyesNum == 0:
+    if faceNum == 0 | eyesNum != 2:
         return 0
     else:
         return 1
@@ -138,39 +142,37 @@ def detectEyes():
 ### 螢幕保護:
 1. 設定最一開始啟用時會出現的字，以及解鎖時所需要按的次數
 ```python=
-def relaxUrEyes():
-    goal = 20
-    text1 = "Please press enter "+str(goal)+ " times"
-    img = np.zeros((2400, 3200, 3), np.uint8)
-    cv2.putText(img, text1, (60, 200), cv2.FONT_HERSHEY_SIMPLEX, 4, (255, 255, 255), 2)
-    cv2.putText(img, "You can do it", (400, 450), cv2.FONT_HERSHEY_SIMPLEX, 5, (255, 255, 255), 2)
-    cv2.putText(img, "MOVE UP!", (450, 800), cv2.FONT_HERSHEY_SIMPLEX, 7, (255, 255, 255), 2)```
+goal = 30 #需要按的目標數量
+text1 = "Please press enter "+str(goal)+ " times"
+img = np.zeros((2400, 3200, 3), np.uint8)
+cv2.putText(img, text1, (60, 200), cv2.FONT_HERSHEY_SIMPLEX, 4, (255, 255, 255), 2)
+cv2.putText(img, "You can do it", (400, 450), cv2.FONT_HERSHEY_SIMPLEX, 5, (255, 255, 255), 2)
+cv2.putText(img, "MOVE UP!", (450, 800), cv2.FONT_HERSHEY_SIMPLEX, 7, (255, 255, 255), 2)
+```
 
 2. 使用 while 迴圈偵測按鍵
 ``` python= 
-    count = 0 # 數按鍵設了幾下
-    while True:
-        # 全螢幕
-        cv2.namedWindow('Its Time To Break!', cv2.WND_PROP_FULLSCREEN)
-        cv2.setWindowProperty('Its Time To Break!', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
-
-        # 顯示圖片
-        cv2.imshow('Its Time To Break!', img)
-        key = cv2.waitKey(0)
-
-        if key == 13:   # 如果按了 enter 鍵
-            playAudio()
-            count += 1
-
-            # 顯示還剩餘幾下要按
-            inputtext = str(goal-count) +" times left"
-            org1,org2 = random.randrange(0,1500),random.randrange(50,900) # 隨機位置
-            size = random.randrange(1,5) # 隨機文字大小
-            r,g,b = random.randrange(0,255),random.randrange(0,255),random.randrange(0,255) # 隨機顏色
-            cv2.putText(img, inputtext, (org1, org2), cv2.FONT_HERSHEY_SIMPLEX, size, (r, g, b), 2)
-            if count == goal: # 如果按到目標次數則停止
-                cv2.destroyAllWindows()
-                break
+count = 0 # 數按鍵設了幾下
+while True:
+    # 全螢幕
+    cv2.namedWindow('Is Time To Break!', cv2WINDOW_NORMAL) # 讓窗口可調整大小並保持比例
+    cv2.setWindowProperty('Is Time To Break!', cv2WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN) # 將視窗的屬性設定為全螢幕
+    # 顯示圖片
+    cv2.imshow('Is Time To Break!', img)
+    key = cv2.waitKey(0)
+   
+    if key == 13:  # 如果按了 enter 鍵(13 為 enter 的 ASCII Code)
+        count += 1
+        
+        # 顯示還剩餘幾下要按
+        inputtext = str(goal-count) + " times left"
+        org1,org2 = ranom.randrange(0,300),random.randrange(20,500) # 隨機位置
+        size = random.randrange(1,3) # 隨機文字大小
+        r,g,b = ranom.randrange(0,255),random.randrange(0,255),random.rndrange(0,255) # 隨機顏色
+        cv2.putText(img, inputtext, (org1, org2), cv2FONT_HERSHEY_SIMPLEX, size, (r, g, b), 2)
+        if count == goal: # 如果按到目標次數則停止
+            cv2.destroyAllWindows()
+            break
 ```
 
 
@@ -187,13 +189,14 @@ python3 takePicNDetec.py
 | :------: |:------------:|
 | 李虹   | 影像辨識、寫 github、報告 |
 | 簡翎恩 | 測試拍照功能、音效播放、報告  |
-| 余佩穎 |  螢幕保護、寫 github、PPT、報告 |
+| 余姵穎 |  螢幕保護、寫 github、PPT、報告 |
 | 李昀婕 | 螢幕保護、影片、報告 |
 |  孫若綺 | 出席線上會議 |
 
 ## REF
 - 影像辨識
     - [How to detect eyes in an image using OpenCV Python](https://www.tutorialspoint.com/how-to-detect-eyes-in-an-image-using-opencv-python)
+    - [opencv haarcascades](https://github.com/opencv/opencv/tree/master/data/haarcascades)
 - 螢幕保護
     - [效果文字](https://ithelp.ithome.com.tw/articles/10237817 )
     - [Python OpenCV 繪製文字 putText](https://shengyu7697.github.io/python-opencv-puttext/)
@@ -205,14 +208,17 @@ python3 takePicNDetec.py
 
 ## 未來展望
 - 搭配眼動儀作更精確的「是否盯著螢幕」的判斷
-- 延伸成外掛(?
+- 增加更多樣化的休息及解鎖方式
+- 結合樹莓派使用
+
 
 ## 遇到的困難
-- 樹梅派上無法順利下載 opencv
+- 樹莓派上無法順利下載 opencv
 - 要用的模組沒辦法順利下載
-    - 舉個例: dlib
-- 用到 Ubuntu 壞掉 
-    > [name=簡小姐]
+- 不知道要怎麼判斷是否盯著螢幕 (而且還要做得出來)
+- 原本休息方式是強制回到桌面，但如果回到桌面就讀不到鍵盤訊號
+- 用到 Ubuntu 壞掉
+
 
 
 ## 致謝!! :heart:
@@ -220,5 +226,3 @@ python3 takePicNDetec.py
 - 柏瑋 @@PengLaiRenOu: debug
 - 漢偉 @UncleHanWei: 題材發想
 - 姜媽: 音效提供
-
-
