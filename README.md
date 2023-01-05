@@ -59,6 +59,8 @@ import numpy as np
 import random
 from playsound import playsound
 ```
+- 在當前目錄底下建立資料夾: testPicture
+    - 存放測資
 
 - main function
 ```python=
