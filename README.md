@@ -223,3 +223,5 @@ python3 takePicNDetec.py
 - 柏瑋 @@PengLaiRenOu: debug
 - 漢偉 @UncleHanWei: 題材發想
 - 姜媽: 音效提供
+
+## [demo 影片](https://youtu.be/N9Imi4NRtFE)
