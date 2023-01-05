@@ -18,7 +18,7 @@
 
 ## Implementation Resources
 ### 實作環境
-- Ubuntu 虛擬機環境
+- Ubuntu 環境
 ### 使用技術
 - Python 
 - OpenCV
