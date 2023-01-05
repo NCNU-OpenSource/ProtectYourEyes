@@ -14,8 +14,6 @@
         - 槌 n 下巨大Enter鍵關閉螢幕保護程式
             > n 可自由設定，目前設 20 下
 
-
-
 ## Implementation Resources
 ### 實作環境
 - Ubuntu 環境
@@ -25,14 +23,14 @@
 ### 所使用的設備材料
 
 - [巨大 enter 鍵](https://shopee.tw/product/70003480/4362094203?smtt=0.30911880-1672760034.9)
-![](https://i.imgur.com/qNc4x1p.jpg =300x)
+![](https://i.imgur.com/qNc4x1p.jpg)
 
 
 ## 實作過程
 - 如果是虛擬機，要確認虛擬機有讀到鏡頭
     ![](https://i.imgur.com/j13vRez.png)
     - 如果讀不到鏡頭可能是擴充包的問題
-        ![](https://i.imgur.com/U97YQu1.png =400x)
+        ![](https://i.imgur.com/U97YQu1.png)
         > 要確認 Oracle 版本，下載相對應的擴充包ㄛ
 
 - 下載 opencv (需要版本 4 以上的)
@@ -208,7 +206,6 @@ python3 takePicNDetec.py
 - 增加更多樣化的休息及解鎖方式
 - 結合樹莓派使用
 
-
 ## 遇到的困難
 - 樹莓派上無法順利下載 opencv
 - 要用的模組沒辦法順利下載
@@ -216,12 +213,10 @@ python3 takePicNDetec.py
 - 原本休息方式是強制回到桌面，但如果回到桌面就讀不到鍵盤訊號
 - 用到 Ubuntu 壞掉
 
-
-
 ## 致謝!! :heart:
 - 惠霖 @Huei-Lin-Lin: debug N 陪伴
 - 柏瑋 @@PengLaiRenOu: debug
 - 漢偉 @UncleHanWei: 題材發想
-- 姜媽: 音效提供
+- 姜美玲教授: 音效提供
 
 ## [demo 影片](https://youtu.be/N9Imi4NRtFE)
